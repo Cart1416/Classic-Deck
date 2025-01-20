@@ -1,2 +1,3 @@
 mkdir -p chromium
-wget -O chromium/chromium.AppImage https://github.com/ivan-hc/Chromium-Web-Browser-appimage/releases/download/continuous/Chromium-stable-132.0.6834.83-x86_64.AppImage
+wget -O chromium/chromium.AppImage https://github.com/ungoogled-software/ungoogled-chromium-portablelinux/releases/download/132.0.6834.83-1/ungoogled-chromium_132.0.6834.83-1.AppImage
+chmod +x chromium/chromium.AppImage

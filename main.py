@@ -54,7 +54,7 @@ def run_chromium():
     os.chdir(current_dir)
 
     # Path to Chromium AppImage
-    chromium_command = './chromium/chromium.AppImage --app=http://localhost:5000 --disable-infobars --disable-dev-tools --start-maximized'
+    chromium_command = './chromium/chromium.AppImage --no-sandbox --app=http://localhost:5000 --disable-infobars --disable-dev-tools --start-maximized'
     
     # Run Chromium command using subprocess.Popen
     process = subprocess.Popen(chromium_command, shell=True)

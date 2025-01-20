@@ -7,7 +7,7 @@ function game() {
 
 function render() {
     cGL.clear();
-    cGL.drawText("Hello World", 100, 100);
+    cGL.importUI([{"type":"text","text":"Hello, World!","x":640,"y":400,"sizeFont":"30px Arial","color":"black","align":"center","baseline":"middle"}]);
     cGL.renderButtons();
 }
 
