@@ -2,3 +2,4 @@
 /dist
 Classic_Deck.spec
 chromium/*
+__pycache__/

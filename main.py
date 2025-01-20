@@ -5,6 +5,13 @@ from flask import Flask, request, send_from_directory
 from threading import Thread
 import webbrowser
 
+from module import NonSteamGameAdder
+adder = NonSteamGameAdder(
+    steamgriddb_api_key="76f41a84b7a0edadc000daa8ff295908"
+)
+steamid = adder.get_current_steam_user()['steamid']
+account_name = adder.get_current_steam_user()['account_name']
+
 # Initialize Flask app
 app = Flask(__name__)
 
@@ -25,6 +32,14 @@ def open_url():
         return {'status': 'success', 'message': f'URL {url} opened in default browser.'}
     else:
         return {'status': 'error', 'message': 'No URL provided.'}, 400
+
+@app.route('/api/steamid')
+def get_steamid():
+    return steamid
+
+@app.route('/api/accountname')
+def get_account_name():
+    return {'account_name': account_name}
 
 @app.route('/exit')
 def exit_app():
@@ -54,7 +69,7 @@ def run_chromium():
     os.chdir(current_dir)
 
     # Path to Chromium AppImage
-    chromium_command = './chromium/chromium.AppImage --no-sandbox --app=http://localhost:5000 --disable-infobars --disable-dev-tools --start-maximized'
+    chromium_command = './chromium/chromium.AppImage --app=http://localhost:5000 --disable-infobars --disable-dev-tools --window-size=1280,800'
     
     # Run Chromium command using subprocess.Popen
     process = subprocess.Popen(chromium_command, shell=True)

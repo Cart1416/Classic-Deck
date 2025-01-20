@@ -481,11 +481,11 @@ var cGL = {
                 if (this.virtualCursor.y > canvas.height) {
                     this.virtualCursor.y = canvas.height;
                 }
-                if (this.gamepads[0].axes.lx > 0.2 || this.gamepads[0].axes.lx < -0.2) {
+                if (this.gamepads[0].axes.lx > 0.1 || this.gamepads[0].axes.lx < -0.1) {
                     this.virtualCursor.x += this.gamepads[0].axes.lx * 10;
                     this.mousePos.x = this.virtualCursor.x;
                 }
-                if (this.gamepads[0].axes.ly > 0.2 || this.gamepads[0].axes.ly < -0.2) {
+                if (this.gamepads[0].axes.ly > 0.1 || this.gamepads[0].axes.ly < -0.1) {
                     this.virtualCursor.y += this.gamepads[0].axes.ly * 10;
                     this.mousePos.y = this.virtualCursor.y;
                 }
