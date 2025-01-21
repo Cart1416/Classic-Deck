@@ -3,3 +3,4 @@
 Classic_Deck.spec
 chromium/*
 __pycache__/
+/emulators/
