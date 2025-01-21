@@ -4,6 +4,34 @@ import time
 from flask import Flask, request, send_from_directory
 from threading import Thread
 import webbrowser
+import argparse
+
+parser = argparse.ArgumentParser(description="Classic Deck")
+parser.add_argument("--nes", type=str, help="Start an NES game.")
+parser.add_argument("--snes", type=str, help="Start an SNES game.")
+parser.add_argument("--n64", type=str, help="Start an N64 game.")
+
+# Parse the arguments
+args = parser.parse_args()
+
+startgame = False
+rom = None
+console = None
+
+if args.nes:
+    startgame = True
+    rom = args.nes
+    console = "nes"
+elif args.snes:
+    startgame = True
+    rom = args.snes
+    console = "snes"
+elif args.n64:
+    startgame = True
+    rom = args.n64
+    console = "n64"
+
+print(rom)
 
 from module import NonSteamGameAdder
 adder = NonSteamGameAdder(
@@ -76,17 +104,38 @@ def run_chromium():
     return process
 
 if __name__ == '__main__':
-    # Start Flask app in a separate thread
-    flask_thread = Thread(target=app.run, kwargs={'port': 5000, 'use_reloader': False})
-    flask_thread.start()
+    if not startgame:
+        # Start Flask app in a separate thread
+        flask_thread = Thread(target=app.run, kwargs={'port': 5000, 'use_reloader': False})
+        flask_thread.start()
 
-    # Start Chromium and monitor it
-    chromium_process = run_chromium()
+        # Start Chromium and monitor it
+        chromium_process = run_chromium()
 
-    # Monitor Chromium in a separate thread
-    monitor_thread = Thread(target=monitor_chromium, args=(chromium_process,))
-    monitor_thread.start()
+        # Monitor Chromium in a separate thread
+        monitor_thread = Thread(target=monitor_chromium, args=(chromium_process,))
+        monitor_thread.start()
 
-    # Wait for both threads to finish
-    flask_thread.join()
-    monitor_thread.join()
+        # Wait for both threads to finish
+        flask_thread.join()
+        monitor_thread.join()
+    else:
+        retroarch_command = None
+        if console == "nes":
+            retroarch_command = [
+                'emulators/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage',
+                '-L', 'cores/nes.so', rom, '--fullscreen'
+            ]
+        elif console == "snes":
+            retroarch_command = [
+                'emulators/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage',
+                '-L', 'cores/snes.so', rom, '--fullscreen'
+            ]
+        elif console == "n64":
+            retroarch_command = [
+                'emulators/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage',
+                '-L', 'cores/n64.so', rom, '--fullscreen'
+            ]
+
+        if retroarch_command:
+            subprocess.run(retroarch_command, shell=False)
