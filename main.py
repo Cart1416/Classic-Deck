@@ -1,10 +1,14 @@
 import os
 import subprocess
 import time
-from flask import Flask, request, send_from_directory
+from flask import Flask, request, send_from_directory, jsonify
 from threading import Thread
 import webbrowser
 import argparse
+import tkinter as tk
+from tkinter import filedialog
+
+from module import NonSteamGameAdder
 
 parser = argparse.ArgumentParser(description="Classic Deck")
 parser.add_argument("--nes", type=str, help="Start an NES game.")
@@ -33,12 +37,33 @@ elif args.n64:
 
 print(rom)
 
-from module import NonSteamGameAdder
 adder = NonSteamGameAdder(
     steamgriddb_api_key="76f41a84b7a0edadc000daa8ff295908"
 )
 steamid = adder.get_current_steam_user()['steamid']
 account_name = adder.get_current_steam_user()['account_name']
+
+def open_file_picker(file_types=None):
+    """
+    Open a file picker dialog and return the selected file path.
+    
+    Args:
+        file_types (list): List of file type tuples for filtering, e.g., [("Text Files", "*.txt"), ("Images", "*.png")].
+        
+    Returns:
+        str: The selected file path, or an empty string if canceled.
+    """
+    if file_types is None:
+        file_types = [("All Files", "*.*")]  # Default to allow all files
+
+    root = tk.Tk()
+    root.withdraw()  # Hide the main Tkinter window
+
+    file_path = filedialog.askopenfilename(
+        title="Select a File",
+        filetypes=file_types
+    )
+    return file_path
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -46,6 +71,25 @@ app = Flask(__name__)
 @app.route('/')
 def hello_world():
     return send_from_directory("public", "index.html")
+
+@app.route('/console')
+def console():
+    return send_from_directory("public", "index.html")
+
+@app.route('/select-rom/<string:systemconsole>', methods=['GET'])
+def select_file(systemconsole):
+    """Endpoint to open a file picker and return the selected file path."""
+    file_path = None
+    if (systemconsole == "nes"):
+        file_path = open_file_picker([("NES Roms", "*.nes;*.fds;*.unf")])
+    if (systemconsole == "snes"):
+        file_path = open_file_picker([("SNES Roms", "*.smc;*.sfc")])
+    if (systemconsole == "n64"):
+        file_path = open_file_picker([("N64 Roms", "*.n64;*.z64;*.v64")])
+    if file_path:
+        return jsonify({"status": "success", "file_path": file_path})
+    else:
+        return jsonify({"status": "cancelled", "file_path": None})
 
 @app.route('/<path:path>')
 def send_static(path):
