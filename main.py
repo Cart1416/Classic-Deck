@@ -8,7 +8,8 @@ import argparse
 import tkinter as tk
 from tkinter import filedialog
 
-from module import NonSteamGameAdder
+scriptpath = os.path.dirname(os.path.abspath(__file__) + "/" + os.path.basename(__file__))
+print(scriptpath)
 
 parser = argparse.ArgumentParser(description="Classic Deck")
 parser.add_argument("--nes", type=str, help="Start an NES game.")
@@ -35,12 +36,12 @@ elif args.n64:
     rom = args.n64
     console = "n64"
 
-print(rom)
-
+from module import NonSteamGameAdder
 adder = NonSteamGameAdder(
     steamgriddb_api_key="76f41a84b7a0edadc000daa8ff295908"
 )
-steamid = adder.get_current_steam_user()['steamid']
+steamid64 = adder.get_current_steam_user()['steamid']
+steamid = str(int(steamid64) - 76561197960265728)
 account_name = adder.get_current_steam_user()['account_name']
 
 def open_file_picker(file_types=None):
@@ -72,25 +73,6 @@ app = Flask(__name__)
 def hello_world():
     return send_from_directory("public", "index.html")
 
-@app.route('/console')
-def console():
-    return send_from_directory("public", "index.html")
-
-@app.route('/select-rom/<string:systemconsole>', methods=['GET'])
-def select_file(systemconsole):
-    """Endpoint to open a file picker and return the selected file path."""
-    file_path = None
-    if (systemconsole == "nes"):
-        file_path = open_file_picker([("NES Roms", "*.nes;*.fds;*.unf")])
-    if (systemconsole == "snes"):
-        file_path = open_file_picker([("SNES Roms", "*.smc;*.sfc")])
-    if (systemconsole == "n64"):
-        file_path = open_file_picker([("N64 Roms", "*.n64;*.z64;*.v64")])
-    if file_path:
-        return jsonify({"status": "success", "file_path": file_path})
-    else:
-        return jsonify({"status": "cancelled", "file_path": None})
-
 @app.route('/<path:path>')
 def send_static(path):
     return send_from_directory("public", path)
@@ -104,6 +86,40 @@ def open_url():
         return {'status': 'success', 'message': f'URL {url} opened in default browser.'}
     else:
         return {'status': 'error', 'message': 'No URL provided.'}, 400
+
+@app.route('/console')
+def consolepage():
+    return send_from_directory("public", "index.html")
+
+@app.route('/select-rom/<string:systemconsole>', methods=['GET'])
+def select_file(systemconsole):
+    """Endpoint to open a file picker and return the selected file path."""
+    file_path = None
+    if (systemconsole == "nes"):
+        file_path = open_file_picker([("NES Roms", "*.nes *.fds *.unf")])
+    if (systemconsole == "snes"):
+        file_path = open_file_picker([("SNES Roms", "*.smc *.sfc")])
+    if (systemconsole == "n64"):
+        file_path = open_file_picker([("N64 Roms", "*.n64 *.z64 *.v64")])
+    if file_path:
+        return jsonify({"status": "success", "file_path": file_path})
+    else:
+        return jsonify({"status": "cancelled", "file_path": None})
+    
+@app.route('/add-to-steam/<systemconsole>', methods=['GET'])
+def add_to_steam(systemconsole):
+    """Endpoint to open a file picker and return the selected file path."""
+    cmdlinearguments = None
+    rom = request.args.get('rom')
+    gamename = request.args.get('gamename')
+    if (systemconsole == "nes"):
+        cmdlinearguments = f"{scriptpath} --nes '{rom}'"
+    if (systemconsole == "snes"):
+        cmdlinearguments = f"{scriptpath} --snes '{rom}'"
+    if (systemconsole == "n64"):
+        cmdlinearguments = f"{scriptpath} --n64 '{rom}'"
+    adder.add_non_steam_game("/usr/bin/python3", gamename, steamid, cmdlinearguments)
+    return jsonify({"status": "success"})
 
 @app.route('/api/steamid')
 def get_steamid():
@@ -167,19 +183,20 @@ if __name__ == '__main__':
         retroarch_command = None
         if console == "nes":
             retroarch_command = [
-                'emulators/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage',
-                '-L', 'cores/nes.so', rom, '--fullscreen'
+                f'{os.path.dirname(os.path.abspath(__file__))}/emulators/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage',
+                '-L', f'{os.path.dirname(os.path.abspath(__file__))}/cores/nes.so', rom, '--fullscreen'
             ]
         elif console == "snes":
             retroarch_command = [
-                'emulators/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage',
-                '-L', 'cores/snes.so', rom, '--fullscreen'
+                f'{os.path.dirname(os.path.abspath(__file__))}/emulators/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage',
+                '-L', f'{os.path.dirname(os.path.abspath(__file__))}/cores/snes.so', rom, '--fullscreen'
             ]
         elif console == "n64":
             retroarch_command = [
-                'emulators/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage',
-                '-L', 'cores/n64.so', rom, '--fullscreen'
+                f'{os.path.dirname(os.path.abspath(__file__))}/emulators/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage',
+                '-L', f'{os.path.dirname(os.path.abspath(__file__))}/cores/n64.so', rom, '--fullscreen'
             ]
 
         if retroarch_command:
+            print(retroarch_command)
             subprocess.run(retroarch_command, shell=False)
