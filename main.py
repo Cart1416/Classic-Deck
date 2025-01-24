@@ -1,5 +1,6 @@
 import os
 import subprocess
+import sys
 import time
 from flask import Flask, request, send_from_directory, jsonify
 from threading import Thread
@@ -8,7 +9,22 @@ import argparse
 import tkinter as tk
 from tkinter import filedialog
 
-scriptpath = os.path.dirname(os.path.abspath(__file__) + "/" + os.path.basename(__file__))
+# Make sure savedata and savestates directories exist
+os.makedirs(os.path.expanduser("~/.config/ClassicDeck/savedata"), exist_ok=True)
+os.makedirs(os.path.expanduser("~/.config/ClassicDeck/savestates"), exist_ok=True)
+
+runningInPyInstaller = False
+
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    runningInPyInstaller = True
+else:
+    runningInPyInstaller = False
+
+scriptpath = None
+if runningInPyInstaller:
+    scriptpath = sys.executable
+else:
+    scriptpath = os.path.abspath(__file__)
 print(scriptpath)
 
 parser = argparse.ArgumentParser(description="Classic Deck")
@@ -112,13 +128,12 @@ def add_to_steam(systemconsole):
     cmdlinearguments = None
     rom = request.args.get('rom')
     gamename = request.args.get('gamename')
-    if (systemconsole == "nes"):
-        cmdlinearguments = f"{scriptpath} --nes '{rom}'"
-    if (systemconsole == "snes"):
-        cmdlinearguments = f"{scriptpath} --snes '{rom}'"
-    if (systemconsole == "n64"):
-        cmdlinearguments = f"{scriptpath} --n64 '{rom}'"
-    adder.add_non_steam_game("/usr/bin/python3", gamename, steamid, cmdlinearguments)
+    if runningInPyInstaller:
+        cmdlinearguments = f"--{systemconsole} '{rom}'"
+        adder.add_non_steam_game(scriptpath, gamename, steamid, cmdlinearguments)
+    else:
+        cmdlinearguments = f"{scriptpath} --{systemconsole} '{rom}'"
+        adder.add_non_steam_game("/usr/bin/python3", gamename, steamid, cmdlinearguments)
     return jsonify({"status": "success"})
 
 @app.route('/api/steamid')
@@ -180,23 +195,28 @@ if __name__ == '__main__':
         flask_thread.join()
         monitor_thread.join()
     else:
+        savefilepath = os.path.expanduser("~/.config/ClassicDeck/savedata")
+        savestatepath = os.path.expanduser("~/.config/ClassicDeck/savestates")
+        config_text = f"savefile_directory = {savefilepath}\nsavestate_directory = {savestatepath}"
+        with open('saveconfig.cfg', 'w') as file:
+            file.write(config_text)
         retroarch_command = None
         if console == "nes":
             retroarch_command = [
                 f'{os.path.dirname(os.path.abspath(__file__))}/emulators/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage',
-                '-L', f'{os.path.dirname(os.path.abspath(__file__))}/cores/nes.so', rom, '--fullscreen'
+                '--appendconfig', 'saveconfig.cfg', '-L', f'{os.path.dirname(os.path.abspath(__file__))}/cores/nes.so', rom, '--fullscreen'
             ]
         elif console == "snes":
             retroarch_command = [
                 f'{os.path.dirname(os.path.abspath(__file__))}/emulators/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage',
-                '-L', f'{os.path.dirname(os.path.abspath(__file__))}/cores/snes.so', rom, '--fullscreen'
+                '--appendconfig', 'saveconfig.cfg', '-L', f'{os.path.dirname(os.path.abspath(__file__))}/cores/snes.so', rom, '--fullscreen'
             ]
         elif console == "n64":
             retroarch_command = [
                 f'{os.path.dirname(os.path.abspath(__file__))}/emulators/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage',
-                '-L', f'{os.path.dirname(os.path.abspath(__file__))}/cores/n64.so', rom, '--fullscreen'
+                '--appendconfig', 'saveconfig.cfg', '-L', f'{os.path.dirname(os.path.abspath(__file__))}/cores/n64.so', rom, '--fullscreen'
             ]
 
         if retroarch_command:
             print(retroarch_command)
-            subprocess.run(retroarch_command, shell=False)
+            subprocess.run(retroarch_command, shell=False) # TODO: make sure savedata works maybe recompile to fix it

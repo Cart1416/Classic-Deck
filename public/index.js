@@ -127,25 +127,25 @@ function render() {
         cGL.drawImage("A", 1150, 760, 40, 40);
         cGL.drawText(username, 0, 760, "20px Arial", "white", "left", "bottom");
         cGL.drawImage("NES", 205, 220, 120, 180);
-        cGL.drawText("0 Games", 265, 380, "16px Arial", "white", "center", "top");
         cGL.drawImage("SNES", 345, 220, 120, 180);
-        cGL.drawText("0 Games", 405, 380, "16px Arial", "white", "center", "top");
         cGL.drawImage("N64", 485, 220, 120, 180);
-        cGL.drawText("0 Games", 545, 380, "16px Arial", "white", "center", "top");
     }
     if (location.pathname == "/console") {
         cGL.importUI(uiArrayConsolePage);
         if (system == "nes") {
             cGL.drawImage("NESWide", 185, 0, canvas.width - 185, 200);
             cGL.drawText("NES", 732, 90, "90px Arial", "white", "center", "alphabetic");
+            cGL.drawText("Emulated with RetroArch Mesen Core", 420, 238, "15px Arial", "white", "left", "middle");
         }
         if (system == "snes") {
             cGL.drawImage("SNESWide", 185, 0, canvas.width - 185, 200);
             cGL.drawText("SNES", 732, 90, "90px Arial", "white", "center", "alphabetic");
+            cGL.drawText("Emulated with RetroArch bsnes HD Core", 420, 238, "15px Arial", "white", "left", "middle");
         }
         if (system == "n64") {
             cGL.drawImage("N64Wide", 185, 0, canvas.width - 185, 200);
             cGL.drawText("N64", 732, 90, "90px Arial", "white", "center", "alphabetic");
+            cGL.drawText("Emulated with RetroArch Mupen64 Core", 420, 238, "15px Arial", "white", "left", "middle");
         }
         cGL.drawImage("Analog", 5, 760, 40, 40);
         cGL.drawImage("A", 1150, 760, 40, 40);
