@@ -1,0 +1,20 @@
+{
+    "scripts": {
+        "minecraft": {
+            "installminecraft.sh": {
+                "displayName": "Install Minecraft"
+            },
+            "updateminecraft.sh": {
+                "displayName": "Update Minecraft"
+            }
+        },
+        "roblox": {
+            "installroblox.sh": {
+                "displayName": "Install Roblox"
+            },
+            "updateroblox.sh": {
+                "displayName": "Update Roblox"
+            }
+        }
+    }
+}

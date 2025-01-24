@@ -1,0 +1,1 @@
+flatpak update --user https://sober.vinegarhq.org/sober.flatpakref
