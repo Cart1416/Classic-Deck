@@ -31,6 +31,7 @@ parser = argparse.ArgumentParser(description="Classic Deck")
 parser.add_argument("--nes", type=str, help="Start an NES game.")
 parser.add_argument("--snes", type=str, help="Start an SNES game.")
 parser.add_argument("--n64", type=str, help="Start an N64 game.")
+parser.add_argument("--add-to-steam", type=str, nargs=3, metavar=("NAME", "PATH", "LAUNCHARGS"), help="Add a game to steam with its name and path and launchargs.")
 
 # Parse the arguments
 args = parser.parse_args()
@@ -51,6 +52,18 @@ elif args.n64:
     startgame = True
     rom = args.n64
     console = "n64"
+
+addToSteamOnBoot = False
+gamename = None
+gamepath = None
+gamelaunchargs = None
+
+if args.add_to_steam:
+    addToSteamOnBoot = True
+    startgame = True
+    gamename = args.add_to_steam[0]
+    gamepath = args.add_to_steam[1]
+    gamelaunchargs = args.add_to_steam[2]
 
 from module import NonSteamGameAdder
 adder = NonSteamGameAdder(
@@ -107,6 +120,10 @@ def open_url():
 def consolepage():
     return send_from_directory("public", "index.html")
 
+@app.route('/scripts')
+def scriptspage():
+    return send_from_directory("public", "index.html")
+
 @app.route('/select-rom/<string:systemconsole>', methods=['GET'])
 def select_file(systemconsole):
     """Endpoint to open a file picker and return the selected file path."""
@@ -135,6 +152,16 @@ def add_to_steam(systemconsole):
         cmdlinearguments = f"{scriptpath} --{systemconsole} '{rom}'"
         adder.add_non_steam_game("/usr/bin/python3", gamename, steamid, cmdlinearguments)
     return jsonify({"status": "success"})
+
+@app.route('/executeonlinescript', methods=['POST', 'GET'])
+def execute_online_script():
+    script_url = request.args.get('url')
+    if script_url:
+        command = f'wget -qO- {script_url} | konsole --notransparency -e bash -c "$(cat)"'
+        subprocess.run(command, shell=True)
+        return {'status': 'success', 'message': 'Script downloaded and executed.'}
+    else:
+        return {'status': 'error', 'message': 'No URL provided.'}, 400
 
 @app.route('/api/steamid')
 def get_steamid():
@@ -194,6 +221,8 @@ if __name__ == '__main__':
         # Wait for both threads to finish
         flask_thread.join()
         monitor_thread.join()
+    elif addToSteamOnBoot:
+        adder.add_non_steam_game(gamepath, gamename, steamid, gamelaunchargs)
     else:
         savefilepath = os.path.expanduser("~/.config/ClassicDeck/savedata")
         savestatepath = os.path.expanduser("~/.config/ClassicDeck/savestates")
