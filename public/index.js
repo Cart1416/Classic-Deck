@@ -41,7 +41,20 @@ fetch('/api/accountname')
     })
     .catch(error => console.error('Error fetching Username:', error));
 
+var runningInPyInstaller = false;
+fetch('/compiledornot')
+    .then(response => response.json())
+    .then(data => {
+        if (data.status == "yes") {
+            runningInPyInstaller = true;
+        } else {
+            runningInPyInstaller = false;
+        }
+    })
+    .catch(error => console.error('Error checking compiledornot:', error));
+
 var addingRom = false;
+var checkingForUpdates = false;
 
 const uiArrayHome = [{"type":"box","x":0,"y":0,"width":9999,"height":9999,"color":"#0E141B","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"box","x":-5,"y":-5,"width":190,"height":9999,"color":"#24282E","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"text","text":"Classic Deck","x":0,"y":0,"sizeFont":"30px Arial","color":"white","align":"left","baseline":"top"},{"type":"text","text":"Beta 1","x":0,"y":30,"sizeFont":"15px Arial","color":"LightGrey","align":"left","baseline":"top"},{"type":"box","x":185,"y":0,"width":9999,"height":200,"color":"#2A303B","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"box","x":-5,"y":760,"width":1290,"height":100,"color":"black","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"text","text":"MOVE","x":50,"y":790,"sizeFont":"20px Arial","color":"white","align":"left","baseline":"bottom"},{"type":"text","text":"SELECT","x":1270,"y":790,"sizeFont":"20px Arial","color":"white","align":"right","baseline":"bottom"},{"type":"text","text":"Classic Deck News","x":732,"y":30,"sizeFont":"30px Arial","color":"white","align":"center","baseline":"alphabetic"},{"type":"box","x":205,"y":220,"width":120,"height":180,"color":"DarkGray","cornerRadius":0,"borderWidth":3,"borderColor":"black"},{"type":"box","x":345,"y":220,"width":120,"height":180,"color":"DarkGray","cornerRadius":0,"borderWidth":3,"borderColor":"black"},{"type":"box","x":485,"y":220,"width":120,"height":180,"color":"DarkGray","cornerRadius":0,"borderWidth":3,"borderColor":"black"}];
 const uiArrayConsolePage = [{"type":"box","x":0,"y":0,"width":9999,"height":9999,"color":"#0E141B","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"box","x":-5,"y":-5,"width":190,"height":9999,"color":"#24282E","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"text","text":"Classic Deck","x":0,"y":0,"sizeFont":"30px Arial","color":"white","align":"left","baseline":"top"},{"type":"text","text":"Beta 1","x":0,"y":30,"sizeFont":"15px Arial","color":"LightGrey","align":"left","baseline":"top"},{"type":"box","x":185,"y":0,"width":9999,"height":200,"color":"#2A303B","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"box","x":-5,"y":760,"width":1290,"height":100,"color":"black","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"text","text":"MOVE","x":50,"y":790,"sizeFont":"20px Arial","color":"white","align":"left","baseline":"bottom"},{"type":"text","text":"SELECT","x":1270,"y":790,"sizeFont":"20px Arial","color":"white","align":"right","baseline":"bottom"}];
@@ -128,16 +141,14 @@ var item7 = "";
 var item8 = "";
 var item9 = "";
 
-function game() {
+async function checkForUpdates() {
+    //TODO: check for updates
+}
+
+async function game() {
     try {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        if (cGL.buttons.button5120.clickOff) {
-            window.location.href = "/";
-        }
-        if (cGL.buttons.button5378.clickOff) {
-            window.location.href = "/scripts";
-        }
         if (location.pathname == "/") {
             if (cGL.buttons.button218.clickOff) {
                 window.location.href = "/console?console=nes";
@@ -218,7 +229,24 @@ function game() {
                 }
             }
         }
-            
+        if (cGL.buttons.button5120.clickOff) {
+            window.location.href = "/";
+        }
+        if (cGL.buttons.button5378.clickOff) {
+            window.location.href = "/scripts";
+        }
+        if (cGL.buttons.button362.clickOff) {
+            checkingForUpdates = true;
+            if (runningInPyInstaller) {
+                await checkForUpdates();
+                console.log("Update requested.");
+            } else {
+                console.log("Not running in PyInstaller.");
+                alert("You must use the official release version of Classic Deck, you are currently running from source.")
+            }
+            render();
+        }
+        
     } catch (error) {
         console.error(error);
     }
@@ -344,6 +372,10 @@ function render() {
     if (addingRom) {
         cGL.drawBox(canvas.width / 2 - 200, canvas.height / 2 - 50, 400, 100, "white", 2, "white");
         cGL.drawText("Adding ROM to Steam", canvas.width / 2, canvas.height / 2, "30px Arial", "black", "center", "middle");
+    }
+    if (checkingForUpdates) {
+        cGL.drawBox(canvas.width / 2 - 200, canvas.height / 2 - 50, 400, 100, "white", 2, "white");
+        cGL.drawText("Checking for Updates", canvas.width / 2, canvas.height / 2, "30px Arial", "black", "center", "middle");
     }
     cGL.renderButtons();
 }

@@ -163,6 +163,13 @@ def execute_online_script():
     else:
         return {'status': 'error', 'message': 'No URL provided.'}, 400
 
+@app.route('/compiledornot', methods=['GET'])
+def compiledornot():
+    if runningInPyInstaller:
+        return {'status': 'yes', 'message': 'We are running in a pyinstaller enviroment.'}
+    else:
+        return {'status': 'no', 'message': 'We are NOT running in a pyinstaller enviroment.'}
+
 @app.route('/api/steamid')
 def get_steamid():
     return steamid
