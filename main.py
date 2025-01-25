@@ -1,3 +1,5 @@
+version = "Beta 2"
+
 import os
 import subprocess
 import sys
@@ -169,6 +171,10 @@ def compiledornot():
         return {'status': 'yes', 'message': 'We are running in a pyinstaller enviroment.'}
     else:
         return {'status': 'no', 'message': 'We are NOT running in a pyinstaller enviroment.'}
+
+@app.route('/version', methods=['GET'])
+def getversion():
+    return {'version': version}
 
 @app.route('/api/steamid')
 def get_steamid():

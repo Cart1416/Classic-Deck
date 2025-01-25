@@ -56,9 +56,9 @@ fetch('/compiledornot')
 var addingRom = false;
 var checkingForUpdates = false;
 
-const uiArrayHome = [{"type":"box","x":0,"y":0,"width":9999,"height":9999,"color":"#0E141B","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"box","x":-5,"y":-5,"width":190,"height":9999,"color":"#24282E","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"text","text":"Classic Deck","x":0,"y":0,"sizeFont":"30px Arial","color":"white","align":"left","baseline":"top"},{"type":"text","text":"Beta 1","x":0,"y":30,"sizeFont":"15px Arial","color":"LightGrey","align":"left","baseline":"top"},{"type":"box","x":185,"y":0,"width":9999,"height":200,"color":"#2A303B","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"box","x":-5,"y":760,"width":1290,"height":100,"color":"black","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"text","text":"MOVE","x":50,"y":790,"sizeFont":"20px Arial","color":"white","align":"left","baseline":"bottom"},{"type":"text","text":"SELECT","x":1270,"y":790,"sizeFont":"20px Arial","color":"white","align":"right","baseline":"bottom"},{"type":"text","text":"Classic Deck News","x":732,"y":30,"sizeFont":"30px Arial","color":"white","align":"center","baseline":"alphabetic"},{"type":"box","x":205,"y":220,"width":120,"height":180,"color":"DarkGray","cornerRadius":0,"borderWidth":3,"borderColor":"black"},{"type":"box","x":345,"y":220,"width":120,"height":180,"color":"DarkGray","cornerRadius":0,"borderWidth":3,"borderColor":"black"},{"type":"box","x":485,"y":220,"width":120,"height":180,"color":"DarkGray","cornerRadius":0,"borderWidth":3,"borderColor":"black"}];
-const uiArrayConsolePage = [{"type":"box","x":0,"y":0,"width":9999,"height":9999,"color":"#0E141B","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"box","x":-5,"y":-5,"width":190,"height":9999,"color":"#24282E","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"text","text":"Classic Deck","x":0,"y":0,"sizeFont":"30px Arial","color":"white","align":"left","baseline":"top"},{"type":"text","text":"Beta 1","x":0,"y":30,"sizeFont":"15px Arial","color":"LightGrey","align":"left","baseline":"top"},{"type":"box","x":185,"y":0,"width":9999,"height":200,"color":"#2A303B","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"box","x":-5,"y":760,"width":1290,"height":100,"color":"black","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"text","text":"MOVE","x":50,"y":790,"sizeFont":"20px Arial","color":"white","align":"left","baseline":"bottom"},{"type":"text","text":"SELECT","x":1270,"y":790,"sizeFont":"20px Arial","color":"white","align":"right","baseline":"bottom"}];
-const uiArrayScriptsPage = [{"type":"box","x":0,"y":0,"width":9999,"height":9999,"color":"#0E141B","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"box","x":-5,"y":-5,"width":190,"height":9999,"color":"#24282E","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"text","text":"Classic Deck","x":0,"y":0,"sizeFont":"30px Arial","color":"white","align":"left","baseline":"top"},{"type":"text","text":"Beta 1","x":0,"y":30,"sizeFont":"15px Arial","color":"LightGrey","align":"left","baseline":"top"},{"type":"box","x":185,"y":0,"width":9999,"height":200,"color":"#2A303B","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"box","x":-5,"y":760,"width":1290,"height":100,"color":"black","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"text","text":"MOVE","x":50,"y":790,"sizeFont":"20px Arial","color":"white","align":"left","baseline":"bottom"},{"type":"text","text":"SELECT","x":1270,"y":790,"sizeFont":"20px Arial","color":"white","align":"right","baseline":"bottom"},{"type":"text","text":"Classic Deck Scripts","x":732,"y":30,"sizeFont":"30px Arial","color":"white","align":"center","baseline":"alphabetic"}];
+const uiArrayHome = [{"type":"box","x":0,"y":0,"width":9999,"height":9999,"color":"#0E141B","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"box","x":-5,"y":-5,"width":190,"height":9999,"color":"#24282E","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"text","text":"Classic Deck","x":0,"y":0,"sizeFont":"30px Arial","color":"white","align":"left","baseline":"top"},{"type":"box","x":185,"y":0,"width":9999,"height":200,"color":"#2A303B","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"box","x":-5,"y":760,"width":1290,"height":100,"color":"black","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"text","text":"MOVE","x":50,"y":790,"sizeFont":"20px Arial","color":"white","align":"left","baseline":"bottom"},{"type":"text","text":"SELECT","x":1270,"y":790,"sizeFont":"20px Arial","color":"white","align":"right","baseline":"bottom"},{"type":"text","text":"Classic Deck News","x":732,"y":30,"sizeFont":"30px Arial","color":"white","align":"center","baseline":"alphabetic"},{"type":"box","x":205,"y":220,"width":120,"height":180,"color":"DarkGray","cornerRadius":0,"borderWidth":3,"borderColor":"black"},{"type":"box","x":345,"y":220,"width":120,"height":180,"color":"DarkGray","cornerRadius":0,"borderWidth":3,"borderColor":"black"},{"type":"box","x":485,"y":220,"width":120,"height":180,"color":"DarkGray","cornerRadius":0,"borderWidth":3,"borderColor":"black"}];
+const uiArrayConsolePage = [{"type":"box","x":0,"y":0,"width":9999,"height":9999,"color":"#0E141B","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"box","x":-5,"y":-5,"width":190,"height":9999,"color":"#24282E","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"text","text":"Classic Deck","x":0,"y":0,"sizeFont":"30px Arial","color":"white","align":"left","baseline":"top"},{"type":"box","x":185,"y":0,"width":9999,"height":200,"color":"#2A303B","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"box","x":-5,"y":760,"width":1290,"height":100,"color":"black","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"text","text":"MOVE","x":50,"y":790,"sizeFont":"20px Arial","color":"white","align":"left","baseline":"bottom"},{"type":"text","text":"SELECT","x":1270,"y":790,"sizeFont":"20px Arial","color":"white","align":"right","baseline":"bottom"}];
+const uiArrayScriptsPage = [{"type":"box","x":0,"y":0,"width":9999,"height":9999,"color":"#0E141B","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"box","x":-5,"y":-5,"width":190,"height":9999,"color":"#24282E","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"text","text":"Classic Deck","x":0,"y":0,"sizeFont":"30px Arial","color":"white","align":"left","baseline":"top"},{"type":"box","x":185,"y":0,"width":9999,"height":200,"color":"#2A303B","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"box","x":-5,"y":760,"width":1290,"height":100,"color":"black","cornerRadius":0,"borderWidth":0,"borderColor":"black"},{"type":"text","text":"MOVE","x":50,"y":790,"sizeFont":"20px Arial","color":"white","align":"left","baseline":"bottom"},{"type":"text","text":"SELECT","x":1270,"y":790,"sizeFont":"20px Arial","color":"white","align":"right","baseline":"bottom"},{"type":"text","text":"Classic Deck Scripts","x":732,"y":30,"sizeFont":"30px Arial","color":"white","align":"center","baseline":"alphabetic"}];
 if (location.pathname == "/") {
     cGL.buttons = {"button5120":{"x":17,"y":55,"width":150,"height":45,"pressed":false,"hover":false,"visible":true,"text":"Home","clickOn":false,"clickOff":false,"textFont":"16px Arial","textColor":"black","color":"#FFFFFF","borderColor":"#FFFFFF","cornerRadius":10,"pressedTime":0,"notPressedTime":1538,"PREVIOUSPRESSED":false},"button5378":{"x":17,"y":105,"width":150,"height":45,"pressed":false,"hover":false,"visible":true,"text":"Scripts","clickOn":false,"clickOff":false,"textFont":"16px Arial","textColor":"white","color":"#3D4450","borderColor":"#3D4450","cornerRadius":10,"pressedTime":0,"notPressedTime":10141,"PREVIOUSPRESSED":false},"button7625":{"x":17,"y":155,"width":150,"height":45,"pressed":false,"hover":false,"visible":true,"text":"Utilities","clickOn":false,"clickOff":false,"textFont":"16px Arial","textColor":"white","color":"#3D4450","borderColor":"#3D4450","cornerRadius":10,"pressedTime":0,"notPressedTime":9857,"PREVIOUSPRESSED":false},"button7892":{"x":17,"y":205,"width":150,"height":45,"pressed":false,"hover":false,"visible":true,"text":"Settings","clickOn":false,"clickOff":false,"textFont":"16px Arial","textColor":"white","color":"#3D4450","borderColor":"#3D4450","cornerRadius":10,"pressedTime":0,"notPressedTime":8603,"PREVIOUSPRESSED":false},"button218":{"x":215,"y":230,"width":100,"height":160,"pressed":false,"hover":false,"visible":false,"text":"NES","clickOn":false,"clickOff":false,"textFont":"16px Arial","textColor":"black","color":"white","borderColor":"black","cornerRadius":0,"pressedTime":0,"notPressedTime":35813,"PREVIOUSPRESSED":false},"button3903":{"x":355,"y":230,"width":100,"height":160,"pressed":false,"hover":false,"visible":false,"text":"SNES","clickOn":false,"clickOff":false,"textFont":"16px Arial","textColor":"black","color":"white","borderColor":"black","cornerRadius":0,"pressedTime":0,"notPressedTime":35646,"PREVIOUSPRESSED":false},"button8945":{"x":495,"y":230,"width":100,"height":160,"pressed":false,"hover":false,"visible":false,"text":"N64","clickOn":false,"clickOff":false,"textFont":"16px Arial","textColor":"black","color":"white","borderColor":"black","cornerRadius":0,"pressedTime":0,"notPressedTime":35549,"PREVIOUSPRESSED":false},"button362":{"x":17,"y":255,"width":150,"height":45,"pressed":false,"hover":false,"visible":true,"text":"Update","clickOn":false,"clickOff":false,"textFont":"16px Arial","textColor":"white","color":"#3D4450","borderColor":"#3D4450","cornerRadius":10,"pressedTime":0,"notPressedTime":8909,"PREVIOUSPRESSED":false}};
 }
@@ -140,6 +140,15 @@ var item6 = "";
 var item7 = "";
 var item8 = "";
 var item9 = "";
+
+var version = "";
+fetch('/version')
+    .then(response => response.json())
+    .then(data => {
+        version = data.version;
+    })
+    .catch(error => console.error('Error fetching Version:', error));
+
 
 async function checkForUpdates() {
     //TODO: check for updates
@@ -242,7 +251,8 @@ async function game() {
                 console.log("Update requested.");
             } else {
                 console.log("Not running in PyInstaller.");
-                alert("You must use the official release version of Classic Deck, you are currently running from source.")
+                alert("You must use the official release version of Classic Deck, you are currently running from source.");
+                checkingForUpdates = false;
             }
             render();
         }
@@ -260,12 +270,14 @@ function render() {
         cGL.drawImage("Analog", 5, 760, 40, 40);
         cGL.drawImage("A", 1150, 760, 40, 40);
         cGL.drawText(username, 0, 760, "20px Arial", "white", "left", "bottom");
+        cGL.drawText(version, 0, 30, "15px Arial", "LightGrey", "left", "top");
         cGL.drawImage("NES", 205, 220, 120, 180);
         cGL.drawImage("SNES", 345, 220, 120, 180);
         cGL.drawImage("N64", 485, 220, 120, 180);
     }
     if (location.pathname == "/console") {
         cGL.importUI(uiArrayConsolePage);
+        cGL.drawText(version, 0, 30, "15px Arial", "LightGrey", "left", "top");
         if (system == "nes") {
             cGL.drawImage("NESWide", 185, 0, canvas.width - 185, 200);
             cGL.drawText("NES", 732, 90, "90px Arial", "white", "center", "alphabetic");
@@ -287,6 +299,7 @@ function render() {
     }
     if (location.pathname == "/scripts") {
         cGL.importUI(uiArrayScriptsPage);
+        cGL.drawText(version, 0, 30, "15px Arial", "LightGrey", "left", "top");
         cGL.buttons.button7167.visible = false;
         cGL.buttons.button7501.visible = false;
         cGL.buttons.button335.visible = false;
