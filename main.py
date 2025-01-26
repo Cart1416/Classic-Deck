@@ -38,6 +38,7 @@ parser.add_argument("--nes", type=str, help="Start an NES game.")
 parser.add_argument("--snes", type=str, help="Start an SNES game.")
 parser.add_argument("--n64", type=str, help="Start an N64 game.")
 parser.add_argument("--add-to-steam", type=str, nargs=3, metavar=("NAME", "PATH", "LAUNCHARGS"), help="Add a game to steam with its name and path and launchargs.")
+parser.add_argument("--install", action="store_true", help="Enable verbose output")
 
 # Parse the arguments
 args = parser.parse_args()
@@ -70,6 +71,12 @@ if args.add_to_steam:
     gamename = args.add_to_steam[0]
     gamepath = args.add_to_steam[1]
     gamelaunchargs = args.add_to_steam[2]
+
+installOnBoot = False
+
+if args.install:
+    installOnBoot = True
+    startgame = True
 
 from module import NonSteamGameAdder
 
@@ -258,6 +265,11 @@ if __name__ == '__main__':
         monitor_thread.join()
     elif addToSteamOnBoot:
         adder.add_non_steam_game(gamepath, gamename, steamid, gamelaunchargs)
+    elif installOnBoot:
+        if runningInPyInstaller:
+            adder.add_non_steam_game(scriptpath, "Classic Deck", steamid)
+        else:
+            print("Please use the compiled version")
     else:
         savefilepath = os.path.expanduser("~/.config/ClassicDeck/savedata")
         savestatepath = os.path.expanduser("~/.config/ClassicDeck/savestates")
