@@ -1,4 +1,5 @@
 version = "Beta 2"
+updateScriptURL = "https://cart1416.github.io/Classic-Deck/update.sh"
 
 import os
 import subprocess
@@ -10,6 +11,9 @@ import webbrowser
 import argparse
 import tkinter as tk
 from tkinter import filedialog
+import requests
+import zipfile
+from io import BytesIO
 
 # Make sure savedata and savestates directories exist
 os.makedirs(os.path.expanduser("~/.config/ClassicDeck/savedata"), exist_ok=True)
@@ -68,6 +72,7 @@ if args.add_to_steam:
     gamelaunchargs = args.add_to_steam[2]
 
 from module import NonSteamGameAdder
+
 adder = NonSteamGameAdder(
     steamgriddb_api_key="76f41a84b7a0edadc000daa8ff295908"
 )
@@ -96,6 +101,7 @@ def open_file_picker(file_types=None):
         filetypes=file_types
     )
     return file_path
+
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -175,6 +181,20 @@ def compiledornot():
 @app.route('/version', methods=['GET'])
 def getversion():
     return {'version': version}
+
+@app.route('/update', methods=['POST', 'GET'])
+def update():
+    # Download the zip file
+    print("Running Update Script")
+    command = f'wget -qO- {updateScriptURL} | konsole --notransparency -e bash -c "$(cat)"'
+    subprocess.run(command, shell=True)
+    print("done")
+    return {'status': 'success', 'message': 'Application updated and shutting down.'}
+
+@app.route('/restart-steam', methods=['GET'])
+def restart_steam():
+    subprocess.run("steam -shutdown", shell=True)
+    return {'status': 'success', 'message': 'Steam has been restarted.'}
 
 @app.route('/api/steamid')
 def get_steamid():

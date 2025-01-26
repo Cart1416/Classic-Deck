@@ -1,5 +1,4 @@
 pyinstaller --name Classic_Deck --noconfirm --noconsole \
-    --add-data "scripts:scripts" \
     --add-data "chromium:chromium" \
     --add-data "public:public" \
     --add-data "emulators:emulators" \
