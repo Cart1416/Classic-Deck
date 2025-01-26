@@ -1,4 +1,4 @@
-version = "Beta 2.2"
+version = "Beta 3"
 updateScriptURL = "https://cart1416.github.io/Classic-Deck/update.sh"
 
 import os
