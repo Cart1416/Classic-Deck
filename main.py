@@ -1,4 +1,4 @@
-version = "Beta 3"
+version = "Beta 3.1"
 updateScriptURL = "https://cart1416.github.io/Classic-Deck/update.sh"
 
 import os
@@ -14,6 +14,8 @@ from tkinter import filedialog
 import requests
 import zipfile
 from io import BytesIO
+
+os.environ.pop("LD_PRELOAD", None)
 
 # Make sure savedata and savestates directories exist
 os.makedirs(os.path.expanduser("~/.config/ClassicDeck/savedata"), exist_ok=True)
@@ -241,7 +243,7 @@ def run_chromium():
     os.chdir(current_dir)
 
     # Path to Chromium AppImage
-    chromium_command = './chromium/chromium.AppImage --app=http://localhost:5000 --disable-infobars --disable-dev-tools --window-size=1280,800'
+    chromium_command = './chromium/chromium.AppImage --app=http://localhost:5000 --disable-infobars --disable-dev-tools --ozone-platform=wayland --enable-features=UseOzonePlatform --start-maximized'
     
     # Run Chromium command using subprocess.Popen
     process = subprocess.Popen(chromium_command, shell=True)
@@ -263,13 +265,20 @@ if __name__ == '__main__':
         # Wait for both threads to finish
         flask_thread.join()
         monitor_thread.join()
+
+        subprocess.run(
+            ["wmctrl", "-a", "Chromium"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
     elif addToSteamOnBoot:
         adder.add_non_steam_game(gamepath, gamename, steamid, gamelaunchargs)
     elif installOnBoot:
         if runningInPyInstaller:
             adder.add_non_steam_game(scriptpath, "Classic Deck", steamid)
         else:
-            print("Please use the compiled version")
+            adder.add_non_steam_game("/usr/bin/python3", "Classic Deck", steamid, scriptpath)
     else:
         savefilepath = os.path.expanduser("~/.config/ClassicDeck/savedata")
         savestatepath = os.path.expanduser("~/.config/ClassicDeck/savestates")
