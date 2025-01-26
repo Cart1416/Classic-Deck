@@ -1,4 +1,4 @@
-version = "Beta 3.2"
+version = "Beta 3.3"
 updateScriptURL = "https://cart1416.github.io/Classic-Deck/update.sh"
 
 import os
@@ -243,7 +243,7 @@ def run_chromium():
     os.chdir(current_dir)
 
     # Path to Chromium AppImage
-    chromium_command = './chromium/chromium.AppImage --app=http://localhost:5000 --disable-infobars --disable-dev-tools --start-maximized'
+    chromium_command = './chromium/chromium.AppImage --app=http://localhost:5000 --disable-infobars --disable-dev-tools --window-size=1280,800'
     
     # Run Chromium command using subprocess.Popen
     process = subprocess.Popen(chromium_command, shell=True)
