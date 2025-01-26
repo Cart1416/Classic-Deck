@@ -194,6 +194,8 @@ def update():
 @app.route('/restart-steam', methods=['GET'])
 def restart_steam():
     subprocess.run("steam -shutdown", shell=True)
+    time.sleep(10)
+    subprocess.run("steam", shell=False)
     return {'status': 'success', 'message': 'Steam has been restarted.'}
 
 @app.route('/api/steamid')
